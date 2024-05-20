@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="CSS/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <!-- Логотип и другие элементы заголовка -->
+      <h1>
+        <span class="pretitle"
+          >Индивидуальный проект по информатике на тему:</span
+        >
+        <br /><span class="title"
+          >сетевая архитектура клиент-сервер на примере протокола HTTP.</span
+        >
+      </h1>
+    </header>
+
+    <main>
+      <aside>
+        <h2>Содержание</h2>
+        <nav>
+          <ul class="menu">
+            <li><a href="index.html">Титульный лист</a></li>
+            <li><a href="intro.html">Введение</a></li>
+            <li>Глава 1.Сетевая инфраструктура HTML</li>
+            <li><a href="1.1.html">1.1.DNS сервера и доменное имя</a></li>
+            <li><a href="1.2.html">1.2 VDS и операционная система Linux</a></li>
+            <li><a href="1.3.html">1.3 HTTP сервер Nginx</a></li>
+            <li><a href="1.4.html">1.4 Telnet как клиент HTTP сервера </a></li>
+            <li><a href="1.5.html">1.5 библиотека FastAPI </a></li>
+            <li>Глава 2. Создание своего сервера</li>
+            <li>
+              <a href="2.1.html"
+                >2.1 регистрация домена и привязка его к VDS серверу</a
+              >
+            </li>
+            <li>
+              <a href="2.2.html"
+                >2.2 установка операционной системы Ubuntu server и подключение
+                по SSH</a
+              >
+            </li>
+            <li><a href="2.3.html">2.3 установка и настройка Nginx</a></li>
+            <li><a href="#">2.4 просмотр статичных файлов через Telnet</a></li>
+            <li>
+              <a href="#"
+                >2.5 Python скрипт возвращающий информацию о браузере</a
+              >
+            </li>
+            <li><a href="#">Заключение</a></li>
+            <li><a href="#">Список использованных источников </a></li>
+            <!-- ... -->
+          </ul>
+        </nav>
+        <!-- Боковая панель с дополнительной информацией -->
+      </aside>
+      <section id="content">
+        <!-- Содержание -->
+        <h2 class="center mb-1">2.3 установка и настройка Nginx</h2>
+<p>Для начала нужно обновить списки пакетов из репозиториев:</p>
+<p>sudo apt update</p>
+<p>После окончания процесса обновления пакетов можно установить Nginx на машину:</p>
+<p>sudo apt install nginx</p>
+<p>Дождемся окончания установки, а после добавим программу в автозагрузку:</p>
+<p>sudo systemctl enable nginx</p>
+<p>Теперь нужно проверить, что веб-сервер успешно установлен и работает, а также добавлен в автозагрузку. Проверим статус работы веб-сервера:</p>
+<p>sudo service nginx status</p>
+<p>Строка «Active: active (running)...» указывает на успешную работу сервера.</p>
+<p>Теперь проверим его наличие в автозагрузке:</p>
+<p>sudo systemctl is-enabled nginx</p>
+<p>Если в ответ на выполненную команду получаем «enabled», значит веб-сервер добавлен в автозагрузки.</p>
+<p>Настройка браундмауэра позволит закрыть все порты кроме необходимых нам:</p>
+<p>Установим утилиту UFW:</p>
+<p>sudo apt install ufw</p>
+<p>После успешной установки добавим веб-сервер в список доступных приложений брандмауэра:</p>
+<p>sudo nano /etc/ufw/applications.d/nginx.ini</p>
+
+
+
+
+<p>Заполним файл следующим образом:</p>
+<p>[Nginx HTTP]</p>
+<p>title=Web Server</p>
+<p>description=Enable NGINX HTTP traffic</p>
+<p>ports=80/tcp</p>
+<p>[Nginx HTTPS] \</p>
+<p>title=Web Server (HTTPS) \</p>
+<p>description=Enable NGINX HTTPS traffic</p>
+<p>ports=443/tcp</p>
+<p>[Nginx Full]</p>
+<p>title=Web Server (HTTP,HTTPS)</p>
+<p>description=Enable NGINX HTTP and HTTPS traffic</p>
+<p>ports=80,443/tcp</p>
+<p>Проверим список доступных приложений:</p>
+<p>sudo ufw app list</p>
+<p>Если среди них есть веб-сервер, значит всё сделано верно. Теперь нужно запустить брандмауэр и разрешить передачу трафика по вышеуказанным портам:</p>
+<p>sudo ufw enable</p>
+<p>sudo ufw allow 'Nginx Full'</p>
+<p>sudo ufw allow 'OpenSSH'</p>
+<p>Чтобы проверить изменения, вводим команду:</p>
+<p>sudo ufw status</p>
+<p>Если всё сделано правильно, то в статусе будут перечислены все порты, которые нам необходимы.</p>
+ 
+<p>После этого нужно перейти в личный кабинет и в настройках DNS поставить ip адресс вашего сервера теперь надо подождать обновления DNS-серверов и сайт будет доступен в сети Интернет. Обновление занимает от 4 до 48 часов, в среднем меньше суток.</p>
+
+      </section>
+    </main>
+
+    <footer>
+      <div class="wraper">
+        <div><p>&copy; Авторские права Минеев Клим</p></div>
+        <div>2024</div>
+        <div>Восточно-сибирский Государственный Университет</div>
+      </div>
+    </footer>
+  </body>
+</html>
