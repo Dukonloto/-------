@@ -77,14 +77,14 @@
 <pre>
 <p>sudo service nginx status</p>
 </pre>
-<img src="C:\Users\User\Desktop\каталог\pictures\active_running.jpg" alt="Not Found" class="picture">
+<img src="pictures/active_running.jpg" alt="Not Found" class="picture">
 <p>Строка «Active: active (running)...» указывает на успешную работу сервера.</p>
 <p>Теперь проверим его наличие в автозагрузке:</p>
 <pre>
 <p>sudo systemctl is-enabled nginx</p>
 </pre>
 <p>Если в ответ на выполненную команду получаем «enabled», значит веб-сервер добавлен в автозагрузки.</p>
-<img src="C:\Users\User\Desktop\каталог\pictures\enabled.jpg" alt="Not Found" class="picture">
+<img src="pictures/enabled.jpg" alt="Not Found" class="picture">
 <p>Настройка браундмауэра позволит закрыть все порты кроме необходимых нам:</p>
 <p>Установим утилиту UFW:</p>
 <pre>
@@ -117,7 +117,7 @@
 <pre>
 <p>sudo ufw app list</p>
 </pre>
-<img src="C:\Users\User\Desktop\каталог\pictures\ServerEsty.jpg" alt="Not Found" class="picture">
+<img src="pictures/ServerEsty.jpg" alt="Not Found" class="picture">
 <p>Если среди них есть веб-сервер, значит всё сделано верно. Теперь нужно запустить брандмауэр и разрешить передачу трафика по вышеуказанным портам:</p>
 <pre>
 <p>sudo ufw enable</p>
@@ -133,7 +133,7 @@
 <p>sudo ufw status</p>
 </pre>
 <p>Если всё сделано правильно, то в статусе будут перечислены все порты, которые нам необходимы.</p>
- <img src="C:\Users\User\Desktop\каталог\pictures\status.jpg" alt="Not Found" class="picture">
+ <img src="pictures/status.jpg" alt="Not Found" class="picture">
 <p>После этого нужно перейти в личный кабинет и в настройках DNS поставить ip адресс вашего сервера теперь надо подождать обновления DNS-серверов и сайт будет доступен в сети Интернет. Обновление занимает от 4 до 48 часов, в среднем меньше суток.</p>
 
       </section>
