@@ -12,6 +12,7 @@ main {
 }
 aside {
     background: #ccc;
+    margin-right: 12px;
 }
 .menu {
     background: #c7c6c6;
@@ -19,6 +20,23 @@ aside {
 }
 h1 {
     text-align: center;
+}
+.split {
+    margin-bottom: 12px;
+}
+pre {
+    display: flex;
+    font-family: monospace;
+    unicode-bidi: isolate;
+    white-space: pre;
+    margin: 1em 0px;
+    padding: 1em 1em;
+    border: #000 solid 1px ;
+    color: rgb(41, 21, 151);
+}
+.picture {
+    width: 600px;
+    height: 400px;
 }
 .pretitle {
     text-transform: uppercase;

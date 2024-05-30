@@ -24,35 +24,35 @@
         <h2>Содержание</h2>
         <nav>
           <ul class="menu">
-            <li><a href="index.html">Титульный лист</a></li>
-            <li><a href="intro.html">Введение</a></li>
-            <li>Глава 1.Сетевая инфраструктура HTML</li>
-            <li><a href="1.1.html">1.1.DNS сервера и доменное имя</a></li>
-            <li><a href="1.2.html">1.2 VDS и операционная система Linux</a></li>
-            <li><a href="1.3.html">1.3 HTTP сервер Nginx</a></li>
-            <li><a href="1.4.html">1.4 Telnet как клиент HTTP сервера </a></li>
-            <li><a href="1.5.html">1.5 библиотека FastAPI </a></li>
-            <li>Глава 2. Создание своего сервера</li>
-            <li>
+            <li class="split"><a href="index.html">Титульный лист</a></li>
+            <li class="split"><a href="intro.html">Введение</a></li>
+            <li class="split">Глава 1.Сетевая инфраструктура HTML</li>
+            <li class="split"><a href="1.1.html">1.1.DNS сервера и доменное имя</a></li>
+            <li class="split"><a href="1.2.html">1.2 VDS и операционная система Linux</a></li>
+            <li class="split"><a href="1.3.html">1.3 HTTP сервер Nginx</a></li>
+            <li class="split"><a href="1.4.html">1.4 Telnet как клиент HTTP сервера </a></li>
+            <li class="split"><a href="1.5.html">1.5 библиотека FastAPI </a></li>
+            <li class="split">Глава 2. Создание своего сервера</li>
+            <li class="split">
               <a href="2.1.html"
                 >2.1 регистрация домена и привязка его к VDS серверу</a
               >
             </li>
-            <li>
+            <li class="split">
               <a href="2.2.html"
                 >2.2 установка операционной системы Ubuntu server и подключение
                 по SSH</a
               >
             </li>
-            <li><a href="2.3.html">2.3 установка и настройка Nginx</a></li>
-            <li><a href="#">2.4 просмотр статичных файлов через Telnet</a></li>
-            <li>
+            <li class="split"><a href="2.3.html">2.3 установка и настройка Nginx</a></li>
+            <li class="split"><a href="#">2.4 просмотр статичных файлов через Telnet</a></li>
+            <li class="split">
               <a href="#"
                 >2.5 Python скрипт возвращающий информацию о браузере</a
               >
             </li>
-            <li><a href="#">Заключение</a></li>
-            <li><a href="#">Список использованных источников </a></li>
+            <li class="split"><a href="#">Заключение</a></li>
+            <li class="split"><a href="#">Список использованных источников </a></li>
             <!-- ... -->
           </ul>
         </nav>
@@ -62,27 +62,44 @@
         <!-- Содержание -->
         <h2 class="center mb-1">2.3 установка и настройка Nginx</h2>
 <p>Для начала нужно обновить списки пакетов из репозиториев:</p>
+<pre>
 <p>sudo apt update</p>
+</pre>
 <p>После окончания процесса обновления пакетов можно установить Nginx на машину:</p>
+<pre>
 <p>sudo apt install nginx</p>
+</pre>
 <p>Дождемся окончания установки, а после добавим программу в автозагрузку:</p>
+<pre>
 <p>sudo systemctl enable nginx</p>
+</pre>
 <p>Теперь нужно проверить, что веб-сервер успешно установлен и работает, а также добавлен в автозагрузку. Проверим статус работы веб-сервера:</p>
+<pre>
 <p>sudo service nginx status</p>
+</pre>
+<img src="C:\Users\User\Desktop\каталог\pictures\active_running.jpg" alt="Not Found" class="picture">
 <p>Строка «Active: active (running)...» указывает на успешную работу сервера.</p>
 <p>Теперь проверим его наличие в автозагрузке:</p>
+<pre>
 <p>sudo systemctl is-enabled nginx</p>
+</pre>
 <p>Если в ответ на выполненную команду получаем «enabled», значит веб-сервер добавлен в автозагрузки.</p>
+<img src="C:\Users\User\Desktop\каталог\pictures\enabled.jpg" alt="Not Found" class="picture">
 <p>Настройка браундмауэра позволит закрыть все порты кроме необходимых нам:</p>
 <p>Установим утилиту UFW:</p>
+<pre>
 <p>sudo apt install ufw</p>
+</pre>
 <p>После успешной установки добавим веб-сервер в список доступных приложений брандмауэра:</p>
+<pre>
 <p>sudo nano /etc/ufw/applications.d/nginx.ini</p>
+</pre>
 
 
 
 
 <p>Заполним файл следующим образом:</p>
+<pre>
 <p>[Nginx HTTP]</p>
 <p>title=Web Server</p>
 <p>description=Enable NGINX HTTP traffic</p>
@@ -95,16 +112,28 @@
 <p>title=Web Server (HTTP,HTTPS)</p>
 <p>description=Enable NGINX HTTP and HTTPS traffic</p>
 <p>ports=80,443/tcp</p>
+</pre>
 <p>Проверим список доступных приложений:</p>
+<pre>
 <p>sudo ufw app list</p>
+</pre>
+<img src="C:\Users\User\Desktop\каталог\pictures\ServerEsty.jpg" alt="Not Found" class="picture">
 <p>Если среди них есть веб-сервер, значит всё сделано верно. Теперь нужно запустить брандмауэр и разрешить передачу трафика по вышеуказанным портам:</p>
+<pre>
 <p>sudo ufw enable</p>
+</pre>
+<pre>
 <p>sudo ufw allow 'Nginx Full'</p>
+</pre>
+<pre>
 <p>sudo ufw allow 'OpenSSH'</p>
+</pre>
 <p>Чтобы проверить изменения, вводим команду:</p>
+<pre>
 <p>sudo ufw status</p>
+</pre>
 <p>Если всё сделано правильно, то в статусе будут перечислены все порты, которые нам необходимы.</p>
- 
+ <img src="C:\Users\User\Desktop\каталог\pictures\status.jpg" alt="Not Found" class="picture">
 <p>После этого нужно перейти в личный кабинет и в настройках DNS поставить ip адресс вашего сервера теперь надо подождать обновления DNS-серверов и сайт будет доступен в сети Интернет. Обновление занимает от 4 до 48 часов, в среднем меньше суток.</p>
 
       </section>
