@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="CSS/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <!-- Логотип и другие элементы заголовка -->
+      <h1>
+        <span class="pretitle"
+          >Индивидуальный проект по информатике на тему:</span
+        >
+        <br /><span class="title"
+          >сетевая архитектура клиент-сервер на примере протокола HTTP.</span
+        >
+      </h1>
+    </header>
+
+    <main>
+      <aside>
+        <h2>Содержание</h2>
+        <nav>
+          <ul class="menu">
+            <li class="split"><a href="index.html">Титульный лист</a></li>
+            <li class="split"><a href="intro.html">Введение</a></li>
+            <li class="split">Глава 1.Сетевая инфраструктура HTML</li>
+            <li class="split"><a href="1.1.html">1.1.DNS сервера и доменное имя</a></li>
+            <li class="split"><a href="1.2.html">1.2 VDS и операционная система Linux</a></li>
+            <li class="split"><a href="1.3.html">1.3 HTTP сервер Nginx</a></li>
+            <li class="split"><a href="1.4.html">1.4 Telnet как клиент HTTP сервера </a></li>
+            <li class="split"><a href="1.5.html">1.5 Динамические страницы и web приложения </a></li>
+            <li class="split">Глава 2. Создание своего сервера</li>
+            <li class="split">
+              <a href="2.1.html"
+                >2.1 регистрация домена и привязка его к VDS серверу</a
+              >
+            </li>
+            <li class="split">
+              <a href="2.2.html"
+                >2.2 установка операционной системы Ubuntu server и подключение
+                по SSH</a
+              >
+            </li>
+            <li class="split"><a href="2.3.html">2.3 установка и настройка Nginx</a></li>
+            <li class="split"><a href="2.4.html">2.4 просмотр статичных файлов через Telnet</a></li>
+            <li class="split">
+              <a href="2.5.html"
+                >2.5 Python скрипт возвращающий информацию о браузере</a
+              >
+              <li class="split"><a href="2.6.html">2.6 размещение веб приложений на сайте</a></li>
+            </li>
+            <li class="split"><a href="outro.html">Заключение</a></li>
+            <li class="split"><a href="sources.html">Список использованных источников </a></li>
+            <!-- ... -->
+          </ul>
+        </nav>
+        <!-- Боковая панель с дополнительной информацией -->
+      </aside>
+      <section id="content">
+        <!-- Содержание -->
+        <h2 class="center mb-1">2.4 просмотр статичных файлов через Telnet</h2>
+
+    <p>Для того чтобы просмотреть статичные данные сервера и клиента нам потребуется программа wireshark она позволяет просматривать сетевой трафик и netcat это программа, позволяющая устанавливать tcp и udp соединение.</p>
+    <p>Через netcat мы будем отправлять telnet запрос потому что если использовать просто telnet, то к его запросу будут добавляться дополнительные ненужные данные которые сервер не сможет воспринять и разорвет соединение.</p>
+    <p class="split">Wireshark мы будем использовать чтобы просматривать трафик идущий от клиента (нашего telnet’а) и сервера (nginx).</p>
+    <p>1. сначала запустим wireshark и установим фильтр на просмотр трафика, идущего на/от сервер’а и только на 80 порте.</p>
+    <img src="pictures/filter.jpg" alt="Not Found" class="picture">
+    <p>2. Дальше нам надо открыть командную строку и прописать в ней команду: ncat “ip-адресс” “порт” (обычно 80). </p>
+    <img src="pictures/ncat_request.jpg" alt="Not Found" class="picture">
+    <p class="split">Эта команда установит соединение с сервером и дальше будет ждать запрос.</p> 
+    <p>3. А тем временем в wireshark мы получаем 3 пакета которые представляют наш запрос серверу и его ответ. Если мы подождем около 600 секунд, то сервер отправит дополнительный ответ который разорвет соединение.</p>
+    <img src="pictures/server_response.jpg" alt="Not Found" class="picture">
+    <p class="split">Первый отправленный пакет (syn) является нашим запросом на подключение к серверу на что он дает ответ следующим пакетом (ask) затем идет еще один наш запрос (syn, ask). То, что ниже красной черты это завершение обмена запросами клиента и сервера. Сервер разрывает соединение первым запросом, а далее мы даем ему на это какой-то ответ.</p>
+    <p>4. теперь снова обратимся к серверу, однако теперь совершим запрос “GET” и URL путь, что мы собираемся получить и версию протокола “/ HTTP/1.1”.</p>
+    <p>Полный запрос: “GET / HTTP/1.1”.</p>
+    <p>После этого нас сервер попросит указать имя хоста (Klim4ik.ru). для того чтобы его указать введите команду: «host: “хост”».</p>
+    <p>Далее введите пустую строку (это означает что заголовок запроса закончен).</p>
+    <img src="pictures/host_mei.jpg" alt="Not Found" class="picture">
+     
+    
+    
+    
+    
+    <p>И сервер выдаст нам статичные данные.</p> 
+    <img src="pictures/seiteki_deeta.jpg" alt="Not Found" class="picture">
+    <p>Так это будет выглядеть в wireshark.</p> 
+    <img src="pictures/full_response.jpg" alt="Not Found" class="picture">
+    <p>Вывод из этой главы мы поняли, как происходит обмен данными на уровне HTTP и TCP соединения. Для исследования HTTP протокола мы использовали netcat, а для исследования TCP соединения использовали wireshark.</p>
+    
+    <footer>
+      <div class="wraper">
+        <div><p>&copy; Авторские права Минеев Клим</p></div>
+        <div>2024</div>
+        <div>Восточно-сибирский Государственный Университет</div>
+      </div>
+    </footer>
+  </body>
+</html>

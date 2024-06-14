@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="CSS/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <!-- Логотип и другие элементы заголовка -->
+      <h1>
+        <span class="pretitle"
+          >Индивидуальный проект по информатике на тему:</span
+        >
+        <br /><span class="title"
+          >сетевая архитектура клиент-сервер на примере протокола HTTP.</span
+        >
+      </h1>
+    </header>
+
+    <main>
+      <aside>
+        <h2>Содержание</h2>
+        <nav>
+          <ul class="menu">
+            <li class="split"><a href="index.html">Титульный лист</a></li>
+            <li class="split"><a href="intro.html">Введение</a></li>
+            <li class="split">Глава 1.Сетевая инфраструктура HTML</li>
+            <li class="split"><a href="1.1.html">1.1.DNS сервера и доменное имя</a></li>
+            <li class="split"><a href="1.2.html">1.2 VDS и операционная система Linux</a></li>
+            <li class="split"><a href="1.3.html">1.3 HTTP сервер Nginx</a></li>
+            <li class="split"><a href="1.4.html">1.4 Telnet как клиент HTTP сервера </a></li>
+            <li class="split"><a href="1.5.html">1.5 Динамические страницы и web приложения </a></li>
+            <li class="split">Глава 2. Создание своего сервера</li>
+            <li class="split">
+              <a href="2.1.html"
+                >2.1 регистрация домена и привязка его к VDS серверу</a
+              >
+            </li>
+            <li class="split">
+              <a href="2.2.html"
+                >2.2 установка операционной системы Ubuntu server и подключение
+                по SSH</a
+              >
+            </li>
+            <li class="split"><a href="2.3.html">2.3 установка и настройка Nginx</a></li>
+            <li class="split"><a href="2.4.html">2.4 просмотр статичных файлов через Telnet</a></li>
+            <li class="split">
+              <a href="2.5.html"
+                >2.5 Python скрипт возвращающий информацию о браузере</a
+              >
+              <li class="split"><a href="2.6.html">2.6 размещение веб приложений на сайте</a></li>
+            </li>
+            <li class="split"><a href="outro.html">Заключение</a></li>
+            <li class="split"><a href="sources.html">Список использованных источников </a></li>
+            <!-- ... -->
+          </ul>
+        </nav>
+        <!-- Боковая панель с дополнительной информацией -->
+      </aside>
+      <section id="content">
+        <!-- Содержание -->
+        <h2 class="center mb-1">2.6 размещение веб приложений на сайте</h2>
+        <p>В среде программистов существует жаргонизм обозначающий размещение web-приложения или готовой версии программного обеспечения на платформе доступной пользователям – деплой (от англ. deploy, развёртывание, приведение в действие).</p>
+        <p>В рамках подготовки к работе постановим менеджер pip, с его помощью мы будем манипулировать компонентами Python. Плюс скачаем файлы, требуемые для создания ряда элементов Gunicorn. Но предварительно скачаем обновления пакетов и установим python3-pip, он нужен для организации среды разработки:</p>
+        <pre><p>sudo apt update</p></pre>
+        <pre><p>sudo apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools</p></pre>
+        <h2 class="split">Настроим приложение Flask</h2>
+        <p>Обновим pip:</p>
+        <pre><p>pip install -U pip</p></pre>
+        <p>Следом загрузим Flask и Gunicorn:</p>
+        <pre><p>pip install gunicorn flask</p></pre>
+        <p>Теперь проверим работоспособность кода, но сначала настроим брандмауэр, чтобы тот разрешал трафик по порту 5000.  </p>
+        <pre><p>sudo ufw allow 5000</p></pre>
+        <p>Теперь система готова к тесту программного модуля Flask:</p>
+        <pre><p>python common.py</p></pre>
+        <p>Теперь откроем наш домен по IP с указанием порта:</p>
+        <pre><p>http://your_server_ip:5000</p></pre>
+        <p>В окне браузера увидим наше приложение. Завершим сессию и отключим сервер нажатием комбинации <Ctrl+C> (в терминале).</p>
+         
+        <h2 class="split">Сделаем точку входа WSGI</h2>
+        <p>Переходим к созданию файла, который послужит нам точкой входа в разрабатываемую программу. Он «подскажет» серверу Gunicorn, каким образом обмениваться данными с ним.</p>
+        <pre><p>nano ~/myproject/wsgi.py</p></pre>
+        <p>Перенесем экземпляр Flask в только что созданный файл, после чего откроем его:</p>
+        <pre>
+        <p>from common import app</p>
+        <p>if __name__ == "__main__":</p>
+            <p>app.run()</p>
+        </pre>
+        <p class="split">По итогу закроем его.</p>
+        <h2 class="split">Настроим Gunicorn</h2>
+        <p>Перед продолжением работы убедимся, что сервер Gunicorn способен правильно обрабатывать нашу программу. Выполняется это передачей наименования точки входа без расширения и имени вызываемого элемента. Возьмем, например, wsgi:app. Еще в команде понадобится указать номер порта с интерфейсом:</p>
+        <pre><p>cd ~/myproject</p></pre>
+        <pre><p>gunicorn --bind 0.0.0.0:5000 wsgi:app</p></pre>
+        <p>Перейдем в браузер и введем IP нашего сервера с портом под номером 5000:</p>
+        <pre><p>http://your_server_ip:5000</p></pre>
+        <p>Программа выдаст сообщение «Hello!». Завершим работу нажатием кнопок <Ctrl + C> в окне терминала. И отключим виртуальную среду:</p>
+        <pre><p>deactivate</p></pre>
+        
+        <p>После этого все команды Python будут иметь отношение только к общей системной среде. Если работать с виртуальной придется постоянно ее активировать командой source или “.”, есть смысл запускать ее автоматически вместе с загрузкой операционной системы. С этой целью сгенерируем файл автозагрузки. Сначала создадим *.service и разместим в папке /etc/systemd/system:</p>
+        <pre><p>sudo nano /etc/systemd/system/myproject.service</p></pre>
+        
+        
+        <p>Первоначально [Unit], куда обычно вносят метаданные и зависимости, внесем описание службы и зададим условие инициализировать «виртуалку» после подтверждения наличия связи:</p>
+        <pre><p>[Unit]</p></pre>
+        <pre><p>Description=Gunicorn instance to serve myproject</p></pre>
+        <pre><p>After=network.target</p></pre>
+        <p>В блоке [Service] укажем аккаунт и группу, от имени которых будет запускаться процесс.</p>
+        <pre><p>[Unit]</p></pre>
+        <pre><p>Description=Gunicorn instance to serve myproject</p></pre>
+        <pre><p>After=network.target</p></pre>
+        <pre><p>[Service]</p></pre>
+        <pre><p>User=username</p></pre>
+        <pre><p>Group=www-data</p></pre>
+        <p>Следующим шагом укажем переменную PATH, чтобы при активизации система сразу «понимала», где брать требуемые файлы (в «виртуалке»).</p>
+        <pre><p>[Unit]</p></pre>
+        <pre><p>Description=Gunicorn instance to serve myproject</p></pre>
+        <pre><p>After=network.target</p></pre>
+        <pre><p>[Service]</p></pre>
+        <pre><p>User=username</p></pre>
+        <pre><p>Group=www-data</p></pre>
+        <pre><p>WorkingDirectory=/home/username/myproject</p></pre>
+        <pre><p>Environment="PATH=/home/username/myproject/myprojectenv/bin"</p></pre>
+        <pre><p>ExecStart=/home/username/myproject/myprojectenv/bin/gunicorn --workers 3 --bind unix:myproject.sock -m 007 wsgi:app</p></pre>
+        <p>Следует учитывать, что для systemd нужно указывать полный путь к файлу Gunicorn, размещенному в «виртуалке».</p>
+        <p>В итоге добавим раздел [Install] и внесем в него:</p>
+        <pre><p>[Unit]</p></pre>
+        <pre><p>Description=Gunicorn instance to serve myproject</p></pre>
+        <pre><p>After=network.target</p></pre>
+        <pre><p>[Service]</p></pre>
+        <pre><p>User=username</p></pre>
+        <pre><p>Group=www-data</p></pre>
+        <pre><p>WorkingDirectory=/home/username/myproject</p></pre>
+        <pre><p>Environment="PATH=/home/username/myproject/myprojectenv/bin"</p></pre>
+        <pre><p>ExecStart=/home/username/myproject/myprojectenv/bin/gunicorn --workers 3 --bind unix:myproject.sock -m 007 wsgi:app</p></pre>
+        <pre><p>[Install]</p></pre>
+        <pre><p>WantedBy=multi-user.target</p></pre>
+        
+        <p>Все, файл systemd подготовлен. Закройте его с сохранением изменений. И можно запускать службу Guricorn (сразу настроим ее загрузку вместе с операционкой):</p>
+        <pre><p>sudo systemctl start myproject</p></pre>
+        <pre><p>sudo systemctl enable myproject</p></pre>
+        <p>Остается проверить ее текущее состояние:</p>
+        <pre><p>sudo systemctl status myproject</p></pre>
+        
+        <p>Переходим к работе с веб-сервером Nginx (Gunicorn не используется в качестве фронтенд-сервера, и обычно настраивается реверс-прокси). Сейчас Nginx настроен на выдачу только статичных файлов, наша динамичная страница находится в URL (/info) поэтому в конфигурационный файл /etc/nginx/sites-available/myproject добавим следующее:</p>
+        <pre><p>location /info {</p>
+        <p>include proxy_params;</p>
+        <p>proxy_pass unix://home/username/myproject/myproject.sock;</p>
+        <p>}</p> </pre>
+        <p>Таким образом web-сервер Nginx работает как для выдачи статичных файлов, так и динамичной, генерируемой web-приложением. </p>
+        
+    <footer>
+      <div class="wraper">
+        <div><p>&copy; Авторские права Минеев Клим</p></div>
+        <div>2024</div>
+        <div>Восточно-сибирский Государственный Университет</div>
+      </div>
+    </footer>
+  </body>
+</html>
